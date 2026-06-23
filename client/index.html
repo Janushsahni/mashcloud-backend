@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mashcloud - Secure Cloud Storage</title>
+    <meta name="description" content="Sign in to your Mashcloud account to access your photos, files, and more securely across all your devices." />
+    <!-- MASHCLOUD_SIGNATURE: Handcrafted by Janush sahni. Designed for privacy. Built for excellence. © 2026 -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </head>
+  <body>
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        var errDiv = document.createElement('div');
+        errDiv.style.position = 'fixed';
+        errDiv.style.top = '0';
+        errDiv.style.left = '0';
+        errDiv.style.width = '100%';
+        errDiv.style.padding = '20px';
+        errDiv.style.background = 'white';
+        errDiv.style.color = 'red';
+        errDiv.style.zIndex = '999999';
+        errDiv.style.fontFamily = 'monospace';
+        errDiv.style.fontSize = '14px';
+        errDiv.innerHTML = '<b>Runtime Error:</b><br>' + message + '<br><br><b>Stack:</b><br>' + (error && error.stack ? error.stack.replace(/\n/g, '<br>') : 'No stack');
+        document.body.appendChild(errDiv);
+      };
+      window.addEventListener('unhandledrejection', function(event) {
+        var errDiv = document.createElement('div');
+        errDiv.style.position = 'fixed';
+        errDiv.style.top = '200px';
+        errDiv.style.left = '0';
+        errDiv.style.width = '100%';
+        errDiv.style.padding = '20px';
+        errDiv.style.background = 'white';
+        errDiv.style.color = 'red';
+        errDiv.style.zIndex = '999999';
+        errDiv.style.fontFamily = 'monospace';
+        errDiv.style.fontSize = '14px';
+        errDiv.innerHTML = '<b>Unhandled Promise Rejection:</b><br>' + event.reason + '<br><br><b>Stack:</b><br>' + (event.reason && event.reason.stack ? event.reason.stack.replace(/\n/g, '<br>') : 'No stack');
+        document.body.appendChild(errDiv);
+      });
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

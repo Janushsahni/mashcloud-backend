@@ -1,0 +1,211 @@
+.recovery-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Nav */
+.recovery-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-bottom: 1px solid var(--surface-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+@media (min-width: 1024px) {
+    .recovery-nav {
+        padding: var(--space-sm) var(--space-xl);
+    }
+}
+
+.recovery-hero {
+    margin-bottom: var(--space-xl);
+}
+
+.recovery-title {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    margin-bottom: var(--space-sm);
+}
+
+.recovery-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+.recovery-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+    .recovery-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.recovery-card {
+    background: var(--surface-1);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-md), var(--shadow-inner);
+}
+
+.recovery-card-header {
+    background: var(--surface-2);
+    padding: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    border-bottom: 1px solid var(--surface-border);
+}
+
+.recovery-card-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    background: #bf5af2;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.recovery-card-title-group h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.recovery-status {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.recovery-list {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.recovery-empty {
+    padding: var(--space-xl) 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+.recovery-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-border);
+    transition: var(--transition-fast);
+}
+
+.recovery-item:hover {
+    border-color: var(--surface-border-strong);
+    background: var(--surface-3);
+}
+
+.recovery-item-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.recovery-item-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--surface-1);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.recovery-item-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.recovery-item-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recovery-item-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.recovery-item-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.recovery-btn {
+    flex: 1;
+    padding: var(--space-xs);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    transition: var(--transition-fast);
+}
+
+.restore-btn {
+    background: rgba(10, 132, 255, 0.1);
+    color: var(--accent-primary);
+    border-color: rgba(10, 132, 255, 0.2);
+}
+
+.restore-btn:hover {
+    background: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+}
+
+.delete-btn {
+    background: rgba(255, 69, 58, 0.1);
+    color: var(--accent-error);
+    border-color: rgba(255, 69, 58, 0.2);
+}
+
+.delete-btn:hover {
+    background: var(--accent-error);
+    color: #fff;
+    border-color: var(--accent-error);
+}

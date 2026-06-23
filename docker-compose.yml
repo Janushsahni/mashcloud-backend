@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  mashcloud:
+    build: .
+    ports:
+      - "3005:3005"
+    env_file:
+      - .env.production
+    volumes:
+      - mashcloud_data:/app/server/uploads
+    depends_on:
+      - db
+      - minio
+      - redis
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  # ---- MinIO Object Storage (Replaces Telegram Bots) ----
+  minio:
+    image: minio/minio:latest
+    container_name: mashcloud-minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # MinIO Console (Admin UI)
+    env_file:
+      - .env.production
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY:-mashcloud_admin}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY:-mashcloud_secret_key_change_me}
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  # ---- PostgreSQL Database ----
+  db:
+    container_name: mashcloud-db
+    image: postgres:16-alpine
+    env_file:
+      - .env.production
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-mashcloud}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-mashcloud_db_password_change_me}
+      - POSTGRES_DB=${POSTGRES_DB:-mashcloud}
+    restart: unless-stopped
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mashcloud}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  # ---- Redis (Session Store, Cache) ----
+  redis:
+    image: redis:7-alpine
+    container_name: mashcloud-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-mashcloud_redis_password_change_me} --maxmemory 128mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-mashcloud_redis_password_change_me}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  # ---- Stalwart Mail Server ----
+  stalwart-mail:
+    image: stalwartlabs/stalwart:latest
+    container_name: mashcloud-mail
+    restart: unless-stopped
+    ports:
+      - "8088:8080"
+    volumes:
+      - stalwart_data:/opt/stalwart-mail
+      - stalwart_etc:/usr/local/stalwart-mail/etc
+
+volumes:
+  mashcloud_data:
+  minio_data:
+  pg_data:
+  redis_data:
+  stalwart_data:
+  stalwart_etc:
