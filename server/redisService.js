@@ -12,19 +12,34 @@ class RedisService {
     }
 
     async init() {
-        const redisUrl = process.env.REDIS_URL || 'redis://redis:6379';
-        const redisPassword = process.env.REDIS_PASSWORD || undefined;
-
-        try {
-            this.client = new Redis(redisUrl, {
-                password: redisPassword,
+        let redisConfig;
+        if (process.env.REDIS_HOST) {
+            redisConfig = {
+                host: process.env.REDIS_HOST,
+                port: process.env.REDIS_PORT || 6379,
+                password: process.env.REDIS_PASSWORD || undefined,
+                tls: {}, // Upstash requires TLS
                 maxRetriesPerRequest: 3,
                 retryStrategy(times) {
-                    const delay = Math.min(times * 500, 5000);
-                    return delay;
+                    return Math.min(times * 500, 5000);
                 },
                 lazyConnect: true,
-            });
+            };
+        } else {
+            const redisUrl = process.env.REDIS_URL || 'redis://redis:6379';
+            redisConfig = {
+                password: process.env.REDIS_PASSWORD || undefined,
+                maxRetriesPerRequest: 3,
+                retryStrategy(times) {
+                    return Math.min(times * 500, 5000);
+                },
+                lazyConnect: true,
+            };
+            redisConfig.url = redisUrl;
+        }
+
+        try {
+            this.client = process.env.REDIS_HOST ? new Redis(redisConfig) : new Redis(redisConfig.url, redisConfig);
 
             await this.client.connect();
             this.isReady = true;

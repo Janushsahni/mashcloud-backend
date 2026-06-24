@@ -2,10 +2,10 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER || 'pentaract',
-    host: process.env.DATABASE_HOST || 'db',
+    host: process.env.POSTGRES_HOST || process.env.DATABASE_HOST || 'db',
     database: process.env.POSTGRES_DB || 'pentaract',
     password: process.env.POSTGRES_PASSWORD || 'pentaract',
-    port: process.env.DATABASE_PORT || 5432,
+    port: process.env.POSTGRES_PORT || process.env.DATABASE_PORT || 5432,
 });
 
 const initDb = async (retries = 5) => {
